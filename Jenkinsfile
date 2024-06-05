@@ -5,6 +5,28 @@ pipeline {
         IMAGE_TAG = "latest"
     }
     stages {
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Install dependencies for each microservice
+                    dir('Auth') {
+                        bat 'npm install'
+                    }
+                    dir('Classrooms') {
+                        bat 'npm install'
+                    }
+                    dir('Event-Bus') {
+                        bat 'npm install'
+                    }
+                    dir('Post') {
+                        bat 'npm install'
+                    }
+                    dir('Client') {
+                        bat 'npm install'
+                    }
+                }
+            }
+        }
         stage('Build Docker Images') {
             steps {
                 script {
@@ -16,7 +38,20 @@ pipeline {
                 }
             }
         }
-       
+        stage('Test with Docker Compose') {
+            steps {
+                script {
+                    // Start services with Docker Compose
+                    bat 'docker-compose up -d'
+                    
+                    // Run some tests to ensure services are working
+                    // You can add test scripts here if needed
+
+                    // Stop services after testing
+                    bat 'docker-compose down'
+                }
+            }
+        }
     }
     post {
         always {
