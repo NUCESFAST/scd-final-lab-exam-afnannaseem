@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+  auth:
+    build: ./Auth
+    ports:
+      - "3124:3124"
+    volumes:
+      - ./Auth:/1124_backend1  # Updated to match WORKDIR in Dockerfile
+    depends_on:
+      - db
+
+  classrooms:
+    build: ./Classrooms
+    ports:
+      - "3125:3125"
+    volumes:
+      - ./Classrooms:/1124_backend2  # Updated to match WORKDIR in Dockerfile
+    depends_on:
+      - db
+
+  event_bus:
+    build: ./Event-Bus
+    ports:
+      - "3126:3126"
+    volumes:
+      - ./Event-Bus:/1124_backend3  # Updated to match WORKDIR in Dockerfile
+
+  post:
+    build: ./Post
+    ports:
+      - "3127:3127"
+    volumes:
+      - ./Post:/1124_backend4  # Updated to match WORKDIR in Dockerfile
+    depends_on:
+      - db
+
+  client:
+    build: ./Client
+    ports:
+      - "1124:1124"
+    volumes:
+      - ./Client:/1124_frontend
+      
+  db:
+    image: mongo
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:

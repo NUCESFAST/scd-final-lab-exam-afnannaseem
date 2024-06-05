@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: classrooms-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: classrooms
+  template:
+    metadata:
+      labels:
+        app: classrooms
+    spec:
+      containers:
+      - name: classrooms
+        image: afnannaseem837/classrooms:latest
+        ports:
+        - containerPort: 3125
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: classrooms-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 3125
+    targetPort: 3125
+  selector:
+    app: classrooms

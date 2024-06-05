@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-bus-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-bus
+  template:
+    metadata:
+      labels:
+        app: event-bus
+    spec:
+      containers:
+      - name: event-bus
+        image: afnannaseem837/event-bus:latest
+        ports:
+        - containerPort: 3126
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-bus-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 3126
+    targetPort: 3126
+  selector:
+    app: event-bus
