@@ -38,20 +38,6 @@ pipeline {
                 }
             }
         }
-        stage('Test with Docker Compose') {
-            steps {
-                script {
-                    // Start services with Docker Compose
-                    bat 'docker-compose up -d'
-                    
-                    // Run some tests to ensure services are working
-                    // You can add test scripts here if needed
-
-                    // Stop services after testing
-                    bat 'docker-compose down'
-                }
-            }
-        }
     }
     post {
         always {
